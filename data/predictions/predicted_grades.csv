@@ -1,0 +1,8 @@
+Name,Math,Science,English,History,Total,Percentage,Predicted_Grade
+student_301,40,75,80,90,285,71.25,B
+student_302,100,100,100,100,400,100.0,A
+student_303,90,95,80,80,345,86.25,A
+student_304,90,95,70,60,315,78.75,B
+student_305,95,85,70,60,310,77.5,B
+student_306,100,100,100,100,400,100.0,A
+student_307,100,100,100,100,400,100.0,A
