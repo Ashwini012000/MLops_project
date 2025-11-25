@@ -105,7 +105,7 @@ ml_client.TrackingServiceClient._log_url = no_emoji_print
 #mlflow.set_tracking_uri("http://localhost:5000")
 
 # Set experiment name (CREATE IF NOT EXISTS)
-mlflow.set_experiment("Student_Grade_Models/version2")
+mlflow.set_experiment("Student_Grade_Models")
 
 # Paths
 MODELS_DIR = "models"
@@ -176,7 +176,7 @@ for file in model_files:
         # Log model locally
         mlflow.sklearn.log_model(
             sk_model=model,
-            name="model"
+            artifact_path="model"
         )
 
         print(f" Logged model to MLflow: {model_name}")

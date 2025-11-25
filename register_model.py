@@ -1,9 +1,10 @@
 import mlflow
-best_run_id = "7b53ff1296594401b596133dcfd7908c"
-mlflow.set_tracking_uri("file:///C:/Users/SKAs328/Desktop/MLOps_project/mlruns")
+best_run_id = "483edabbb16546a8883ba3553819281e"
 
-model_uri = f"runs:/{best_run_id}/RandomForest_model"
-mlflow.register_model(
+model_uri = f"runs:/{best_run_id}/model"
+model_details= mlflow.register_model(
     model_uri=model_uri,
     name="Student_Grade_Models"
 )
+
+print(f"Model registered with name: {model_details.name} and version: {model_details.version}")
