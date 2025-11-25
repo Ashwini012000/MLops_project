@@ -105,7 +105,7 @@ ml_client.TrackingServiceClient._log_url = no_emoji_print
 #mlflow.set_tracking_uri("http://localhost:5000")
 
 # Set experiment name (CREATE IF NOT EXISTS)
-mlflow.set_experiment("Student_Grade_Models/version2")
+mlflow.set_experiment("Student_Grade_Model/version2")
 
 # Paths
 MODELS_DIR = "models"
