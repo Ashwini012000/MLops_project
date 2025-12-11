@@ -3,7 +3,7 @@ import mlflow
 from mlflow.tracking import MlflowClient
 
 # Your best model run-id
-best_run_id = "46cd37d6501b4ed2ba3748bfd8624469"
+best_run_id = "mlruns\517387353629759616\46cd37d6501b4ed2ba3748bfd8624469"
 
 # Model URI inside the run's artifacts
 model_uri = f"runs:/{best_run_id}/model"

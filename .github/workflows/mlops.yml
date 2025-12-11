@@ -58,7 +58,7 @@ jobs:
         sleep 10
 
     - name: Show MLflow Logs
-      run: cat mlflow_server.log
+      run: python ml_tracking.py
 
     # ----------------- SELECT BEST MODEL & REGISTER -----------------
     - name: Compare runs and register best model
