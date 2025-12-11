@@ -20,7 +20,7 @@ def no_emoji_print(self, run_id):
 ml_client.TrackingServiceClient._log_url = no_emoji_print
 
 # Set MLflow to local folder (VERY IMPORTANT)
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_tracking_uri("mlruns\517387353629759616\46cd37d6501b4ed2ba3748bfd8624469")
 
 # Set experiment name (CREATE IF NOT EXISTS)
 mlflow.set_experiment("Student_Grade_Project")
