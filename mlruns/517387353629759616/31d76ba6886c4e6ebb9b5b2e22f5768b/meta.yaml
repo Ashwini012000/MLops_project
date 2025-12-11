@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/SKAs328/Desktop/MLOps_project/mlruns/517387353629759616/31d76ba6886c4e6ebb9b5b2e22f5768b/artifacts
+end_time: 1764566979806
+entry_point_name: ''
+experiment_id: '517387353629759616'
+lifecycle_stage: active
+run_id: 31d76ba6886c4e6ebb9b5b2e22f5768b
+run_name: SVM_model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764566975513
+status: 3
+tags: []
+user_id: SKAs328

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/SKAs328/Desktop/MLOps_project/mlruns/517387353629759616/22c3e74182e444c6a45bc8386e4f681f/artifacts
+end_time: 1764065782742
+entry_point_name: ''
+experiment_id: '517387353629759616'
+lifecycle_stage: active
+run_id: 22c3e74182e444c6a45bc8386e4f681f
+run_name: LogisticRegression_model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764065777702
+status: 3
+tags: []
+user_id: SKAs328

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/SKAs328/Desktop/MLOps_project/mlruns/517387353629759616/46cd37d6501b4ed2ba3748bfd8624469/artifacts
+end_time: 1764566975495
+entry_point_name: ''
+experiment_id: '517387353629759616'
+lifecycle_stage: active
+run_id: 46cd37d6501b4ed2ba3748bfd8624469
+run_name: RandomForest_model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764566970430
+status: 3
+tags: []
+user_id: SKAs328

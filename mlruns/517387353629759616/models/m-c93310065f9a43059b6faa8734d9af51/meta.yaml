@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/SKAs328/Desktop/MLOps_project/mlruns/517387353629759616/models/m-c93310065f9a43059b6faa8734d9af51/artifacts
+creation_timestamp: 1764566958962
+experiment_id: '517387353629759616'
+last_updated_timestamp: 1764566965008
+model_id: m-c93310065f9a43059b6faa8734d9af51
+model_type: null
+name: model
+source_run_id: 330ee8b09afc42cd89c27afca2eddb3d
+status: 2
+status_message: null
