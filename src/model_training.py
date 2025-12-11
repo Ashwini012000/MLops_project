@@ -38,9 +38,17 @@ class ModelTrainer:
      self.feature_cols = numeric_cols
 
      X = self.df[self.feature_cols]
-     #here grade is converted to numbers
+     # grade is converted to numbers and stored in the model
      y = self.label_encoder.fit_transform(self.df[self.target_col])
      #print(f"target:{y}")
+
+     # Create a new LabelEncoder
+     le = LabelEncoder()
+     #y_encoded = le.fit_transform(y)
+
+# Save the fitted encoder (NOT y)
+     joblib.dump(self.label_encoder, "label_encoder.pkl")
+     print(type(le))
 
      print("\nINPUT FEATURES (X):")
      print(X.head())
@@ -58,8 +66,11 @@ class ModelTrainer:
         
 
         for name, model in self.models.items():
-            model.fit(X_train, y_train)
+            #training no compute no prediction here
+            model.fit(X_train, y_train) 
+            #after model trained it will guess the grade on unseen data
             y_pred = model.predict(X_test)
+            #here it will comapare the predicated grade with real grades
             acc = accuracy_score(y_test, y_pred)
             self.results[name] = acc
 

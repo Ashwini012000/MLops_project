@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <h2>Student Grade Predictor</h2>
+
+    <form action="/predict" method="post">
+      Math: <input type="number" name="Math"><br><br>
+      Science: <input type="number" name="Science"><br><br>
+      English: <input type="number" name="English"><br><br>
+      History: <input type="number" name="History"><br><br>
+      <button type="submit">Predict</button>
+    </form>
+
+    {% if grade %}
+      <h3>Predicted Grade: {{ grade }}</h3>
+    {% endif %}
+  </body>
+</html>

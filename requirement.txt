@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+mlflow
+joblib
+jinja2
+scikit-learn
+python:3.10

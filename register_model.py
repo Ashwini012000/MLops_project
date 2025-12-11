@@ -1,15 +1,34 @@
+
 import mlflow
-<<<<<<< HEAD
-best_run_id = "7b53ff1296594401b596133dcfd7908c"
+from mlflow.tracking import MlflowClient
 
-=======
-best_run_id = "483edabbb16546a8883ba3553819281e"
->>>>>>> 08f27187bb00986ae3034340cec852a5941135c9
+# Your best model run-id
+best_run_id = "46cd37d6501b4ed2ba3748bfd8624469"
 
+# Model URI inside the run's artifacts
 model_uri = f"runs:/{best_run_id}/model"
-model_details= mlflow.register_model(
+
+# Model registry name
+model_name = "Student_Grade_Models"
+
+# Register a new version of the model
+model_details = mlflow.register_model(
     model_uri=model_uri,
-    name="Student_Grade_Models"
+    name=model_name,
+    
+)
+#Add Alias (staging or production)
+client = MlflowClient()
+
+client.set_registered_model_alias(
+    name=model_name,
+    alias="staging",              # alias
+    version=model_details.version
 )
 
-print(f"Model registered with name: {model_details.name} and version: {model_details.version}")
+print("Alias 'staging' set successfully!")
+
+# Print details
+print(f"Model registered successfully!")
+print(f"Model Name: {model_details.name}")
+print(f"Model Version: {model_details.version}")
