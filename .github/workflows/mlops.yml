@@ -48,7 +48,19 @@ jobs:
     # ----------------- START MLFLOW SERVER -----------------
     - name: Start MLflow Tracking Server + UI
       run: python ml_tracking.py
-        
+    - name: Wait for MLflow server to be READY
+      run: |
+        for i in {1..20}
+        do
+          if curl -s http://127.0.0.1:5000; then
+            echo "MLflow server is UP!"
+            exit 0
+          fi
+          echo "Waiting for MLflow... ($i)"
+          sleep 3
+        done
+        echo "MLflow did NOT start!"
+        exit 1
 
     # ----------------- SELECT BEST MODEL & REGISTER -----------------
     - name: Compare runs and register best model
@@ -59,7 +71,7 @@ jobs:
       run: |
         python model_loder.py \
           --model-name student-grade-model \
-          --model-stage Production \
+          --model-stage Staging \
           --output-path src/model
 
     # ----------------- FASTAPI SMOKE TEST -----------------

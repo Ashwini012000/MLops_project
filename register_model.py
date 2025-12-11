@@ -14,7 +14,7 @@ model_name = "Student_Grade_Models"
 # Register a new version of the model
 model_details = mlflow.register_model(
     model_uri=model_uri,
-    name=model_name,
+    name=model_name
     
 )
 #Add Alias (staging or production)
