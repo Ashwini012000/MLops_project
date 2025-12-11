@@ -1,4 +1,4 @@
-#name: MLOps Full Pipeline (Training → MLflow → Registry → FastAPI Test → Docker → Deploy EC2)
+name: MLOps Full Pipeline (Training → MLflow → Registry → FastAPI Test → Docker → Deploy EC2)
 
 on:
   push:
@@ -36,15 +36,14 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+    #pip install -r requirements.txt
 
-    # ----------------- START MLFLOW SERVER -----------------
-   
-
+  
     # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
       run: python main.py
 
+    # ----------------- START MLFLOW SERVER -----------------
     - name: Start MLflow Tracking Server + UI
       run: |
         mkdir -p mlruns
