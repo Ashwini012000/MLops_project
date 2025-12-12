@@ -63,7 +63,7 @@ class DataProcessor:
     def save_processed_data(self):
         """Save processed data to CSV inside data/processed/"""
         if self.save_path is None:
-            self.save_path = "data/unknown_processed/processed_data.csv"
+            self.save_path = "data/processed/processed_data.csv"
         os.makedirs(os.path.dirname(self.save_path), exist_ok=True)
         self.df.to_csv(self.save_path, index=False)
         print(f"Processed data saved successfully at: {self.save_path}")
