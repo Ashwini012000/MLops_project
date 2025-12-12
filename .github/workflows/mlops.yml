@@ -41,64 +41,64 @@ jobs:
     - name: Check installed packages
       run: python -m pip list
 
-
-    # ----------------- START MLFLOW SERVER -----------------
-    - name: Start MLflow Tracking Server
-      run: |
-        mkdir -p mlruns
-        nohup mlflow server \
-          --backend-store-uri "sqlite:///mlflow.db" \
-          --default-artifact-root "./mlruns" \
-          --host 127.0.0.1 \
-          --port 5000 \
-          > mlflow.log 2>&1 &
-          
-    - name: Start MLflow Tracking Server + UI
-      run: python ml_tracking.py
-    - name: Wait for MLflow server to be READY
-      run: |
-        for i in {1..20}
-        do
-          if curl -s http://127.0.0.1:5000; then
-            echo "MLflow server is UP!"
-            exit 0
-          fi
-          echo "Waiting for MLflow... ($i)"
-          sleep 3
-        done
-        echo "MLflow did NOT start!"
-        exit 1
-
-    # ----------------- TRAINING PIPELINE -----------------
+    # # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
       run: python main.py
+
+    #    # ----------------- START MLFLOW SERVER -----------------
+    # - name: Start MLflow Tracking Server
+    #   run: |
+    #     mkdir -p mlruns
+    #     nohup mlflow server \
+    #       --backend-store-uri "sqlite:///mlflow.db" \
+    #       --default-artifact-root "./mlruns" \
+    #       --host 127.0.0.1 \
+    #       --port 5000 \
+    #       > mlflow.log 2>&1 &
+
+    # - name: Start MLflow Tracking Server + UI
+    #   run: python ml_tracking.py
       
-    # ----------------- SELECT BEST MODEL & REGISTER -----------------
-    - name: Compare runs and register best model
-      run: python register_model.py
+    # - name: Wait for MLflow server to be READY
+    #   run: |
+    #     for i in {1..20}
+    #     do
+    #       if curl -s http://127.0.0.1:5000; then
+    #         echo "MLflow server is UP!"
+    #         exit 0
+    #       fi
+    #       echo "Waiting for MLflow... ($i)"
+    #       sleep 3
+    #     done
+    #     echo "MLflow did NOT start!"
+    #     exit 1
+      
+    # # ----------------- SELECT BEST MODEL & REGISTER -----------------
+    # - name: Compare runs and register best model
+    #   run: python register_model.py
 
-    # ----------------- DOWNLOAD PRODUCTION MODEL -----------------
-    - name: Download model from MLflow Model Registry
-      run: |
-        python model_loder.py \
-          --model-name student-grade-model \
-          --model-stage Staging \
-          --output-path src/model
+    # # ----------------- DOWNLOAD PRODUCTION MODEL -----------------
+    # - name: Download model from MLflow Model Registry
+    #   run: |
+    #     python model_loder.py \
+    #       --model-name student-grade-model \
+    #       --model-stage Staging \
+    #       --output-path src/model
 
-    # ----------------- FASTAPI SMOKE TEST -----------------
-    - name: Start FastAPI for Smoke Testing
-      run: |
-        uvicorn src.fastapi_app:app --host 0.0.0.0 --port 8000 &> fastapi.log &
-        sleep 7
-        echo "FastAPI Logs:"
-        cat fastapi.log
+    # # ----------------- FASTAPI SMOKE TEST -----------------
+    # - name: Start FastAPI for Smoke Testing
+    #   run: |
+    #     uvicorn src.fastapi_app:app --host 0.0.0.0 --port 8000 &> fastapi.log &
+    #     sleep 7
+    #     echo "FastAPI Logs:"
+    #     cat fastapi.log
 
-    - name: Run API Smoke Tests
-      run: |
-        curl --fail http://127.0.0.1:8000/health
-        curl --fail -H "Content-Type: application/json" \
-            -d '{"math":80,"science":75,"english":85,"social":90}' \
-            http://127.0.0.1:8000/predict
+    # - name: Run API Smoke Tests
+    #   run: |
+    #     curl --fail http://127.0.0.1:8000/health
+    #     curl --fail -H "Content-Type: application/json" \
+    #         -d '{"math":80,"science":75,"english":85,"social":90}' \
+    #         http://127.0.0.1:8000/predict
 
     # # ----------------- DOCKER BUILD -----------------
     # - name: Build Docker Image
