@@ -55,6 +55,11 @@ jobs:
     - name: Run main.py (preprocess + train + log to MLflow)
       run: python main.py
 
+    - name: Verify processed data
+      run: |
+           ls -l data/processed
+
+
     # # ----------------- REGISTER BEST MODEL -----------------
     # - name: Register best model
     #   run: python register_model.py
