@@ -46,10 +46,15 @@ jobs:
           pwd
           ls -R .
 
+    - name: Show file structure
+      run: |
+        pwd
+        ls -R
+
      # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
       run: |
-        python MLOps_project/main.py
+        python main.py
       
     
     #    # ----------------- START MLFLOW SERVER -----------------
