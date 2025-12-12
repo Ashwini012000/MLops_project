@@ -41,11 +41,18 @@ jobs:
     - name: Check installed packages
       run: python -m pip list
 
-    # ----------------- TRAINING PIPELINE -----------------
-    - name: Run Training (preprocess + train + log models)
-      run: python main.py
 
     # ----------------- START MLFLOW SERVER -----------------
+    - name: Start MLflow Tracking Server
+      run: |
+        mkdir -p mlruns
+        nohup mlflow server \
+          --backend-store-uri "sqlite:///mlflow.db" \
+          --default-artifact-root "./mlruns" \
+          --host 127.0.0.1 \
+          --port 5000 \
+          > mlflow.log 2>&1 &
+          
     - name: Start MLflow Tracking Server + UI
       run: python ml_tracking.py
     - name: Wait for MLflow server to be READY
@@ -62,6 +69,10 @@ jobs:
         echo "MLflow did NOT start!"
         exit 1
 
+    # ----------------- TRAINING PIPELINE -----------------
+    - name: Run Training (preprocess + train + log models)
+      run: python main.py
+      
     # ----------------- SELECT BEST MODEL & REGISTER -----------------
     - name: Compare runs and register best model
       run: python register_model.py
