@@ -64,16 +64,17 @@ def main():
     processor = DataProcessor(df_raw, save_path=processed_data_path)
     processed_df = processor.run_pipeline()
     print(f"Processed data saved at: {processed_data_path}")
+    print(f"data saved")
 
-    # Step 3: Train the model
-    print("Training model...")
-    trainer = ModelTrainer(processed_df)
-    trainer.train_models()
-    # Optional: save best model locally
-    trainer.save_best_model(model_save_path)
-    print(f"Model saved successfully at: {model_save_path}")
+    # # Step 3: Train the model
+    # print("Training model...")
+    # trainer = ModelTrainer(processed_df)
+    # trainer.train_models()
+    # # Optional: save best model locally
+    # trainer.save_best_model(model_save_path)
+    # print(f"Model saved successfully at: {model_save_path}")
 
-    print("Pipeline execution completed successfully!")
+    # print("Pipeline execution completed successfully!")
 
 if __name__ == "__main__":
     main()
