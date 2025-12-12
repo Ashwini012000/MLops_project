@@ -62,7 +62,7 @@ def main():
     # Step 2: Process data
     print("Cleaning and processing data...")
     processor = DataProcessor(df_raw, save_path=processed_data_path)
-    processed_df = processor.run_pipeline()
+    processor.run_pipeline()
     print(f"Processed data saved at: {processed_data_path}")
     print(f"data saved")
 
