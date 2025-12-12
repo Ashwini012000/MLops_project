@@ -1,4 +1,4 @@
-name: MLOps Full Pipeline (Training → MLflow → Registry → FastAPI Test → Docker → Deploy EC2)
+name: MLOps Full Pipeline (Training → MLflow → Registry → FastAPI → Docker → EC2)
 
 on:
   push:
@@ -18,12 +18,12 @@ jobs:
       EC2_HOST: ${{ secrets.EC2_HOST }}
       EC2_USER: ${{ secrets.EC2_USER }}
 
-      # MLflow local tracking server
-      MLFLOW_TRACKING_URI: "http://127.0.0.1:5000"
+      # MLflow file-based tracking (works in GitHub Actions)
+      MLFLOW_TRACKING_URI: "file://${{ github.workspace }}/mlruns"
 
     steps:
 
-    # ----------------- CHECKOUT CODE -----------------
+    # ----------------- CHECKOUT -----------------
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -33,100 +33,64 @@ jobs:
       with:
         python-version: "3.10"
 
-    - name: Install Python dependencies
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirement.txt
 
-    - name: Check installed packages
-      run: python -m pip list
-
-    - name: Print file tree to debug path issues
-      run: |
-          pwd
-          ls -R .
-
-    - name: Show file structure
+    - name: Check file structure
       run: |
         pwd
         ls -R
 
-    - name: Prepare data folders
+    # ----------------- PREPARE DATA FOLDERS -----------------
+    - name: Create data folders
       run: |
+        mkdir -p data/raw
         mkdir -p data/processed
+        mkdir -p mlruns
         ls -R data
 
+    # ----------------- RUN TRAINING PIPELINE -----------------
+    - name: Run main.py (preprocess + train + log to MLflow)
+      run: python main.py
 
-     # ----------------- TRAINING PIPELINE -----------------
-    - name: Run Training (preprocess + train + log models)
-      run: |
-        python main.py
-      
-    
-    #    # ----------------- START MLFLOW SERVER -----------------
-    # - name: Start MLflow Tracking Server
-    #   run: |
-    #     mkdir -p mlruns
-    #     nohup mlflow server \
-    #       --backend-store-uri "sqlite:///mlflow.db" \
-    #       --default-artifact-root "./mlruns" \
-    #       --host 127.0.0.1 \
-    #       --port 5000 \
-    #       > mlflow.log 2>&1 &
-
-    # - name: Start MLflow Tracking Server + UI
-    #   run: python ml_tracking.py
-      
-    # - name: Wait for MLflow server to be READY
-    #   run: |
-    #     for i in {1..20}
-    #     do
-    #       if curl -s http://127.0.0.1:5000; then
-    #         echo "MLflow server is UP!"
-    #         exit 0
-    #       fi
-    #       echo "Waiting for MLflow... ($i)"
-    #       sleep 3
-    #     done
-    #     echo "MLflow did NOT start!"
-    #     exit 1
-      
-    # # ----------------- SELECT BEST MODEL & REGISTER -----------------
-    # - name: Compare runs and register best model
+    # # ----------------- REGISTER BEST MODEL -----------------
+    # - name: Register best model
     #   run: python register_model.py
 
     # # ----------------- DOWNLOAD PRODUCTION MODEL -----------------
-    # - name: Download model from MLflow Model Registry
+    # - name: Load production model
     #   run: |
-    #     python model_loder.py \
+    #     python model_loader.py \
     #       --model-name student-grade-model \
-    #       --model-stage Staging \
+    #       --model-stage Production \
     #       --output-path src/model
 
     # # ----------------- FASTAPI SMOKE TEST -----------------
-    # - name: Start FastAPI for Smoke Testing
+    # - name: Start FastAPI
     #   run: |
     #     uvicorn src.fastapi_app:app --host 0.0.0.0 --port 8000 &> fastapi.log &
     #     sleep 7
-    #     echo "FastAPI Logs:"
+    #     echo "FastAPI logs:"
     #     cat fastapi.log
 
-    # - name: Run API Smoke Tests
+    # - name: Run API tests
     #   run: |
     #     curl --fail http://127.0.0.1:8000/health
     #     curl --fail -H "Content-Type: application/json" \
-    #         -d '{"math":80,"science":75,"english":85,"social":90}' \
-    #         http://127.0.0.1:8000/predict
+    #       -d '{"math":80,"science":75,"english":85,"social":90}' \
+    #       http://127.0.0.1:8000/predict
 
     # # ----------------- DOCKER BUILD -----------------
-    # - name: Build Docker Image
+    # - name: Build Docker image
     #   run: |
     #     IMAGE_TAG=${GITHUB_SHA::8}
     #     docker build -t $ECR_URI:${IMAGE_TAG} .
     #     echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
     # # ----------------- AWS LOGIN -----------------
-    # - name: Configure AWS Creds
+    # - name: Configure AWS Credentials
     #   uses: aws-actions/configure-aws-credentials@v3
     #   with:
     #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -136,14 +100,14 @@ jobs:
     # - name: Login to ECR
     #   run: |
     #     aws ecr get-login-password --region $AWS_REGION \
-    #       | docker login --username AWS --password-stdin $ECR_URI
+    #     | docker login --username AWS --password-stdin $ECR_URI
 
-    # # ----------------- PUSH IMAGE -----------------
-    # - name: Push Docker Image to ECR
+    # # ----------------- PUSH DOCKER IMAGE -----------------
+    # - name: Push Docker image to ECR
     #   run: docker push $ECR_URI:${IMAGE_TAG}
 
     # # ----------------- DEPLOY TO EC2 -----------------
-    # - name: Deploy to EC2
+    # - name: Deploy Docker container on EC2
     #   uses: appleboy/ssh-action@v1
     #   with:
     #     host: ${{ secrets.EC2_HOST }}
@@ -160,7 +124,7 @@ jobs:
     #       sudo docker run -d --name grade-api -p 80:8000 $IMAGE
 
     # # ----------------- POST DEPLOY CHECK -----------------
-    # - name: Post Deploy Health Check
+    # - name: Post-deploy health check
     #   run: |
     #     sleep 12
     #     curl --fail http://${{ secrets.EC2_HOST }}/health
