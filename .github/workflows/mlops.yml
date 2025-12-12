@@ -41,10 +41,12 @@ jobs:
     - name: Check installed packages
       run: python -m pip list
 
-    # # ----------------- TRAINING PIPELINE -----------------
+     # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
-      run: python main.py
-
+      run: |
+        python main.py
+        name : processed data stored
+    
     #    # ----------------- START MLFLOW SERVER -----------------
     # - name: Start MLflow Tracking Server
     #   run: |
