@@ -51,6 +51,12 @@ jobs:
         pwd
         ls -R
 
+    - name: Prepare data folders
+      run: |
+        mkdir -p data/processed
+        ls -R data
+
+
      # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
       run: |
