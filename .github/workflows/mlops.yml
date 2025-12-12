@@ -49,7 +49,7 @@ jobs:
      # ----------------- TRAINING PIPELINE -----------------
     - name: Run Training (preprocess + train + log models)
       run: |
-        python main.py
+        python MLops_project/main.py
       
     
     #    # ----------------- START MLFLOW SERVER -----------------
