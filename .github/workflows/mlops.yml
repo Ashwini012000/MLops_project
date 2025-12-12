@@ -44,12 +44,12 @@ jobs:
         ls -R
 
     # ----------------- PREPARE DATA FOLDERS -----------------
-    - name: Create data folders
-      run: |
-        mkdir -p data/raw
-        mkdir -p data/processed
-        mkdir -p mlruns
-        ls -R data
+    # - name: Create data folders
+    #   run: |
+    #     mkdir -p data/raw
+    #     mkdir -p data/processed
+    #     mkdir -p mlruns
+    #     ls -R data
 
     # ----------------- RUN TRAINING PIPELINE -----------------
     - name: Run main.py (preprocess + train + log to MLflow)
